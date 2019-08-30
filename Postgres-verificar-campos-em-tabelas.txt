@@ -1,0 +1,10 @@
+SELECT
+   TABLE_NAME AS TABELA,
+   COLUMN_NAME AS CAMPO  
+FROM
+   INFORMATION_SCHEMA.COLUMNS   
+WHERE
+   COLUMN_NAME LIKE 'nome_campo%' -- Exemplo: 'id_empresa%'   
+   AND COLUMN_NAME <> 'nome_campo_exclusao' -- Exemplo: 'id_empresaerp'   
+ORDER BY
+   TABELA ASC
