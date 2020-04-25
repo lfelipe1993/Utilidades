@@ -1,0 +1,319 @@
+#LINK UTIL: https://guides.github.com/features/issues/
+#Voltar 1 commit (ATUAL)
+HEAD~1
+#Dois commits pra tras
+HEAD~2
+
+Egit - plugin pra eclipse
+gitEye - GUI do GIT baseada no eclipse
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#adiciona arquivos ao commit
+COMANDO: git add . (pode trocar o . pelo nome dos arquivos a serem comitados)
+
+#commitar com mensagem
+COMANDO: git commit -m "mensagem do commit"
+
+#ver os commits feitos
+COMANDO: git log - ou - git log --oneline
+
+#adicionar repositorio remoto no git
+COMANDO: git remote add <remote> <url>
+COMANDO: git remote add origin git@github.com:user/repo.git (origin é o remote padrao)
+
+#Listar os remotes
+COMANDO: git remote -v
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Primeiro push necessario setar a branch (branch é uma linha de desenvolvimento no repo git)
+#Envia alterações (commits) de uma branch para o repositorio remoto.
+COMANDO: git push -u origin master #(Primeira vez)
+COMANDO: git push #(demais vezes)
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Baixar alterações do repositorio remoto (mantem o repo sincronizado com os ultimos commits da branch)
+COMANDO: git pull
+
+#mostrar arquivos manipulados e seus estados
+COMANDO: git status
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#diff
+
+#Exibir diferenças entre commits e branchs
+COMANDO: git diff [path] (#variacao: git diff <commit1> <commit2>)
+
+#Exibir diferenças no diretorio
+COMANDO: git diff HEAD~1
+
+#Exibir diferenças no diretorio
+COMANDO: git diff HEAD~1 HEAD
+
+#Baixa repositorios
+COMANDO: git clone <URL>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Navegar no histórico (util para verificar bugs voltando a commits antigos)
+COMANDO: git checkout <commit> <file> #ATENÇÃO: não podem haver modificações não commitadas no projeto.
+
+#para voltar ao último commit faça:
+COMANDO: git checkout master
+
+---------------------------------------------------------------------------
+
+#Desfazer todas alterações que nao estejam no stage desde o ultimo commit (ou seja arquivos que nao deram git add .)
+
+COMANDO: git checkout -- <path_or_file>
+COMANDO: git checkout -- . (#TODOS ARQUIVOS)
+
+#Desfazers fazer alteracoes desde o ultimo commit incluido o stage (ou seja arquivos que foi dado git add .)
+git checkout HEAD -- <path_or_file>
+
+#Git reset (#vai resetar o diretorio para um determinado commit. Nao use se estiver publicado no github)
+COMANDO: git reset --hard <commit> (#Preciso remover o commit, inclusive as alterações nos arquivos.)
+COMANDO: git reset --soft <commit> <(OU HEAD~1)>  (#Preciso remover o último commit, porém mantendo os arquivos do jeito que estão.) - "git reset usada --soft" como padrao
+
+
+#Git Revert (#Cria um novo commit que desfaz as alterações do commit especificado. Util para desfazer commit antigo)
+COMANDO: git revert <commit>
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Braching (Cria ramificações no repositorio) - é uma lista de commits - representa ramificações no repositorio - muito util em trabalhos colaborativos - 
+#Brach de desenvolvimento facilitam o controle. A branch master é a padrao
+
+COMANDO: git branch (#ver as branchs)
+
+#criar nova branch
+COMANDO: git branch <nova_branch>
+
+#excluir branch
+COMANDO: git branch -d <branch>
+
+#Mudar a branch (Seu repositorio passa a ter os commits que a branch possui e novos commits serao adicionados a ela)
+COMANDO: git checkout <branch>
+COMANDO: git checkout -b <branch2> (#parametro -b ja alterada pra branch em questao)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Git Merge - aplicar commits de uma branch na branch atual - encontra um commit comum(base) entre as branchs e aplica todos os comiits que a branch atual nao possui.
+#Caso existam commits na branch atual que nao estao na outra, sera criado um commit de merge
+#OBS: Merge é recomendado a ser utilizado apenas quando a branch divergiu muito da outra
+
+COMANDO: git merge <branch>
+
+#editar arquivos com conflitos e posteriormente usar o comando
+COMANDO: git add .
+#commitar com mensagem
+COMANDO: git commit -m "merge da branch"
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#git Rebase - Semelhante ao merge, porém diferente na ordem de aplicar commits
+#No rebase os seus commits na frente da base são removidos temporariamente, os commits de outra branch são aplicados na sua branch e por fim seus commits
+#sao aplicados um a um
+#Pode acontecer conflitos que serao resolvidos para cada commit.
+
+COMANDO: git rebase <branch>
+
+#editar arquivos com conflitos e posteriormente usar o comando
+COMANDO: git add .
+
+#Apos resolver conflitos manualmente necessarioo dar git add . (ou nome do arquivo) e utilizar o commando abaixo:
+COMANDO: git rebase --continue
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Git Fetch - baixa as atualizações do remote porém nao aplica elas no repositorio. - Permite fazer i rebase de uma branch em vez de fazer merge.
+#comando pull é similar = Fetch + merge
+
+#Fetch e rebase é melhor para manter histórico do desenvolvimento
+COMANDO: git fetch (baixa os arquivos do github mas nao aplica)
+
+#posteriormente git rebase (nao havendo conflito os comandos abaixo nao sao necessários)
+COMANDO: git rebase
+#editar arquivos com conflitos e posteriormente usar o comando
+COMANDO: git add .
+COMANDO: git rebase --continue
+COMANDO: git push
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Git Tag (RELEASE) - util para definir versoes estaveis do projeto. - Semelhante a branch porem nao recebe mais commits.
+
+#guarda um estado do repositorio
+COMANDO: git tag [nome da tag]
+
+# commitar codigo
+COMANDO: git push <remote(origin)> <tag(v1.0>
+
+#Verifica tag no momento
+COMANDO: git tag
+
+#As tags são uteis para gerar correções bugsfixies, por exemplo podemos dar "git checkout v1.0" e posteriormente criar uma branch como o comando
+"git checkout -b novabranch" para corrigir erros.
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#Fork - Criar uma copia de um repositorio no github
+
+#CRIE O DIRETORIO E INICIE ELE
+COMANDO: git init
+
+#DEPOIS ASSOCIE A UM DIRETORIO NO GIT
+COMANDO: git remote add origin git@github.com:seusuario/repo.git
+
+#POSTERIORMENTE VERIFIQUE OS REMOTES COM 
+COMANDO: git remote -v
+
+#DEPOIS ASSOCIE COM O DIRETORIO NO GIT QUE VC QUER FORKAR
+COMANDO: git remote add upstream https://github.com/usuario/repo-para-fork.git
+
+#APOS Adicionar o upstream insira o commando fetch para baixar os arquivos
+COMANDO: git fetch upstream
+
+#VOLTAR PARA BRANCH MASTER
+COMANDO: git checkout master
+
+#Faça o merge das alterações feitas em upstream/master para o branch master local.
+COMANDO: git merge upstream/master
+
+#FACA UM PULL PARA MASTER
+git push origin master
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Issues (GIT HUB)
+* Report bugs
+* Organizar tarefas a serem feitas.
+* Permite descussão entre usuarios.
+* Pode ser referenciado por commits:
+COMANDO: git Commit -m "descricao Closes #3" - vai fechar a issue de codigo 3
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Pull Request
+* Grande Simbolo de colaboração
+* E quando você solicita que sua alteração seja unida a uma branch do mesmo repositorio ou a um repositorio que sofreu fork
+* Igual a uma issue porem com uma branch associada.
+* Muito útil para o trabalho colaborativo.
+* Pode ser feito Merge pro repositorio ou não
+
+#Checkout em pull request
+
+#Cria uma branch com os commits do pull request
+COMANDO: git fetch origin pull/ID/head:BRANCH
+
+#Entra na branch2
+COMANDO: git checkout BRANCH
+
+#ACEITAR PULL REQUEST
+* Aceita pelo GITHUB
+
+#Depois executa o commando para voltar pra branch master
+COMANDO: git checkout master
+
+#Fazer o pull (paga pegar o ultimo commit e fazer merge)
+COMANDO: git pull
+-------------------------------------------------------------------------------------------------------------------------------
+
+#Submetendo um pull request.
+
+* Forkar projeto no site do github
+
+#iniciar Repo
+COMANDO: Git init 
+
+#setar diretorio remoto
+COMANDO: git remote add origin git@github.com:user/repo.git
+
+#baixar o repositorio
+COMANDO: git pull
+
+#verificar se esta na branch master
+COMANDO:git checkout master
+
+#criar uma nova branch
+COMANDO: git checkout -b <novabranch>
+
+*Criar arquivos/modificar arquivos
+
+#Passo a passo fazer esses comandos separados por ">"
+COMANDO: git add . > git commit -m "descrição" > git commit > git push --set-upstream origin <novabranch>
+
+#Voltar para branch master
+COMANDO:git checkout master
+
+#fazer merge com a nova branch
+COMANDO: git merge <novabranch>
+
+#Realizar Push
+COMANDO: git push
+
+**Apos isso realizar o pull request no site do github
+
+
+****Possivel forma de dar merge pelo terminal é adicionando o remote e posteriormente utilizar algo similar ao comando abaixo****
+COMANDO:  git request-pull origin/lnewbranch https://github.com/user/repo.git master
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+####COMANDOS UTEIS####
+
+#Git commit Ammend
+#Ele permite alterar o ultimo commit que fez (você pode tanto editar os arquivos como a mensagem de commit) - nao pode ter dado push
+#Voce pode adicionar arquivos modificados no commit anterior unindo os arquivos atuais que deu (git add) com os antigos
+COMANDO: git commit --amend
+
+#Git stash
+#Guarda alterações do working directory (permite fazer rebase,merge, trocar de branch sem a necessidade de fazer um commit)
+
+COMANDO: git stash (salva o working directory - o working directory é os arquivos modificados)
+COMANDO: git stash list (Mostra a lista de stash)
+COMANDO: git stash pop (vai pegar o ultimo stash na pilha e voltar ao repositorio)
+
+#Git cherryPick
+
+#Aplica as alterações de um commit na branch atual (Cria um novo commit, é util para recuperar histórico)
+#Comando util quando branchs digervem muito. Exemplo branch 1.0 diverge muito da 5.0. você realiza um bugfix na 1.0 e quer esse commit na 5.0 pra deixar igual
+COMANDO: git cherry-pick <commit> (<branch> pega ultimo commit <branch~2> - pega 2 commits da branch pra trás)
+
+#Git Blame
+#Mostra alteracoes feitas em um arquivo por linha. 
+#Mostra o autor e commit que foi feito naquela linha. Muito util para verificar quando as alterações foi feitas, por que e por quem.
+COMANDO: git blame <arquivo>
+
+
+#Git show
+#Mostra as alteracoes realizadas nesse commit
+git show <pedaco do hash do commit>
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Git bisect
+#Permite fazer uma busca binária nos commits para encontrar uma alteração. (Similar ao git blame)
+#Util para grandes alteraoes que modificaram o comportamento e nao pode ser indentificadas por codigo facilmente.
+#Quando a alteração pode ser bastante antiga.
+COMANDO: git bisect
+
+#FLOW step-by-step
+
+#git bisect start (passa para o estado em que você quer fazer busca no seu repositorio na sua arvore de commits)
+#Precisamos falar 2 coisas para o git bisect - qual o commit com erro e qual o commit que esta correto.
+COMANDO: git bisect start
+
+COMANDO: git bisect bad <commit> (se nao colocar o commit vai pegar o ultimo commit ou seja estado atual).
+
+COMANDO: git bisect good <commit> (indicar o commit que esta correto)
+
+**APOS ISSO voce ira verificar o arquivo se esta correto ou ruim utilizando os comando "git bisect bad" para (ruim) e "git bisect good" (para o arquivo bom)
+
+#para sair do modo bisect
+COMANDO: git bisect reset
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Configurações 
+#Configurar usuario git
+COMANDO: git config --global user.name "meuusername"
+COMANDO: git config --global user.email "meuemail@email.com" 
+
+#retira configuração
+COMANDO: git config --global --unset user.name "meuusername"
+
+#editar o editor padrao 
+COMANDO: git config --global core.editor gedit (substituir gedit pelo editor padrao)
